@@ -94,7 +94,7 @@ public class Vault extends JavaPlugin {
     public void onDisable() {
         // Remove all Service Registrations
         getServer().getServicesManager().unregisterAll(this);
-        Bukkit.getScheduler().cancelTasks(this);
+        FoliaScheduler.cancelAll(this);
     }
 
     @Override
@@ -117,7 +117,7 @@ public class Vault extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new VaultListener(), this);
         // Schedule to check the version every 30 minutes for an update. This is to update the most recent 
         // version so if an admin reconnects they will be warned about newer versions.
-        this.getServer().getScheduler().runTask(this, new Runnable() {
+        FoliaScheduler.runGlobal(this, new Runnable() {
 
             @Override
             public void run() {
@@ -131,7 +131,7 @@ public class Vault extends JavaPlugin {
                 }
                 perm.setDescription("Allows a user or the console to check for vault updates");
 
-                getServer().getScheduler().runTaskTimerAsynchronously(plugin, new Runnable() {
+                FoliaScheduler.runAsyncTimer(plugin, new Runnable() {
 
                     @Override
                     public void run() {
